@@ -9,6 +9,7 @@ This repository manages infrastructure using Pulumi with TypeScript.
 ├── .github/workflows/    # CI/CD automation
 ├── stacks/               # Infrastructure stacks
 │   ├── binari.ly/        # binari.ly domain infrastructure
+│   ├── callahan.house/   # callahan.house domain infrastructure
 │   └── zmc.dev/          # zmc.dev domain infrastructure
 ```
 
@@ -33,4 +34,3 @@ Each stack manages DNS and related infrastructure for a specific domain:
 - Configuration is in `Pulumi.yaml` and `Pulumi.prod.yaml`
 - DNS records are organized by type (email, web, etc.)
 - Secrets are encrypted using AWS KMS
-
