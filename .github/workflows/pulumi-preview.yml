@@ -1,0 +1,97 @@
+name: Pulumi Preview
+
+on:
+  pull_request:
+    branches:
+    - main
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+jobs:
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+      has-changes: ${{ steps.set-matrix.outputs.has-changes }}
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Get changed files
+      id: changed-files
+      uses: tj-actions/changed-files@v46
+      with:
+        files: |
+          stacks/**/*.ts
+        dir_names: true
+        dir_names_max_depth: 2
+
+    - name: Set matrix
+      id: set-matrix
+      run: |
+        changed_stacks=()
+        for dir in ${{ steps.changed-files.outputs.all_changed_files }}; do
+          if [[ $dir == stacks/* ]]; then
+            stack_name=$(echo $dir | cut -d'/' -f2)
+            if [[ ! " ${changed_stacks[@]} " =~ " ${stack_name} " ]]; then
+              changed_stacks+=("$stack_name")
+            fi
+          fi
+        done
+
+        if [ ${#changed_stacks[@]} -eq 0 ]; then
+          echo "has-changes=false" >> $GITHUB_OUTPUT
+          echo "matrix={\"stack\":[]}" >> $GITHUB_OUTPUT
+        else
+          echo "has-changes=true" >> $GITHUB_OUTPUT
+          matrix_json=$(printf '{"stack":["%s"]}' "$(IFS='","'; echo "${changed_stacks[*]}")")
+          echo "matrix=$matrix_json" >> $GITHUB_OUTPUT
+        fi
+
+        echo "Changed stacks: ${changed_stacks[@]}"
+
+  preview:
+    needs: detect-changes
+    if: needs.detect-changes.outputs.has-changes == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      matrix: ${{ fromJson(needs.detect-changes.outputs.matrix) }}
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Configure AWS Credentials
+      uses: aws-actions/configure-aws-credentials@v4
+      with:
+        role-to-assume: ${{ secrets.AWS_OIDC_ROLE_ARN }}
+        aws-region: us-east-2
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '20'
+
+    - name: Install pnpm
+      uses: pnpm/action-setup@v4
+      with:
+        version: 10
+
+    - name: Install dependencies
+      run: |
+        cd stacks/${{ matrix.stack }}
+        pnpm install
+
+    - name: Run Pulumi preview
+      uses: pulumi/actions@v5
+      with:
+        command: preview
+        stack-name: prod
+        work-dir: stacks/${{ matrix.stack }}
+        comment-on-pr: true
+        comment-on-summary: true
+        cloud-url: ${{ secrets.PULUMI_BACKEND_URL }}
+

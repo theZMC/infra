@@ -1,0 +1,10 @@
+name: zmc.dev
+description: Infrastructure for the zmc.dev domain and its projects
+runtime:
+  name: nodejs
+  options:
+    packagemanager: pnpm
+config:
+  pulumi:tags:
+    value:
+      pulumi:template: typescript
