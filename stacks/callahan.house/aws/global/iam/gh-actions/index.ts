@@ -9,6 +9,7 @@ const ghActions = () => {
 
   const assumeRolePolicyDoc = aws.iam.getPolicyDocumentOutput({
     version: "2012-10-17",
+
     statements: [
       {
         effect: "Allow",
