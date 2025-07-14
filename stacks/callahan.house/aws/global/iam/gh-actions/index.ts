@@ -49,11 +49,23 @@ const ghActions = () => {
     },
   );
 
+  const allowKmsPolicy = new aws.iam.Policy("github-actions-kms", {
+    policy: aws.iam.getPolicyDocument({
+      statements: [
+        {
+          effect: "Allow",
+          actions: ["kms:Decrypt", "kms:GenerateDataKey", "kms:Encrypt"],
+          resources: ["*"],
+        },
+      ],
+    }).then((doc) => doc.json),
+  });
+
   const allowKmsAttachment = new aws.iam.RolePolicyAttachment(
     "github-actions-kms",
     {
       role: role.name,
-      policyArn: "arn:aws:iam::aws:policy/AWSKeyManagementServicePowerUser",
+      policyArn: allowKmsPolicy.arn,
     },
   );
 
