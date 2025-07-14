@@ -23,7 +23,7 @@ const ghActions = () => {
             test: "StringLike",
             variable: `${oidcBaseDomain}:sub`,
             values: [
-              "repo:thezmc/infra:*",
+              "repo:theZMC/infra:*",
             ],
           },
           {
