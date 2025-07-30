@@ -18,19 +18,23 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
     zoneId,
   });
 
-  const ipAddresses = {
+  const ghPagesIps = {
     v4: [
-      "162.159.140.98",
-      "172.66.0.96",
+      "185.199.108.153",
+      "185.199.109.153",
+      "185.199.110.153",
+      "185.199.111.153",
     ],
     v6: [
-      "2606:4700:7::60",
-      "2a06:98c1:58::60",
+      "2606:50c0:8000::153",
+      "2606:50c0:8001::153",
+      "2606:50c0:8002::153",
+      "2606:50c0:8003::153",
     ],
   };
 
   const aRecords = Object.fromEntries(
-    ipAddresses.v4.map((
+    ghPagesIps.v4.map((
       ipv4,
       i,
     ) => [
@@ -46,7 +50,7 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
   );
 
   const aaaaRecords = Object.fromEntries(
-    ipAddresses.v6.map((
+    ghPagesIps.v6.map((
       ipv6,
       i,
     ) => [
