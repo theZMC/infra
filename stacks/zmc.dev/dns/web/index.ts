@@ -7,6 +7,7 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
     type: "CNAME",
     ttl: 300,
     content: "zmc.dev",
+    proxied: true,
     zoneId,
   });
 
@@ -15,6 +16,7 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
     type: "CNAME",
     ttl: 300,
     content: "zmc.dev",
+    proxied: true,
     zoneId,
   });
 
@@ -44,6 +46,7 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
         type: "A",
         ttl: 300,
         content: ipv4,
+        proxied: true,
         zoneId,
       }),
     ]),
@@ -60,6 +63,7 @@ const webRecords = (zoneId: pulumi.Input<string>) => {
         type: "AAAA",
         ttl: 300,
         content: ipv6,
+        proxied: true,
         zoneId,
       }),
     ]),
