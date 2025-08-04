@@ -1,3 +1,3 @@
-import dnsRecords from "./dns";
+import { Records as DnsRecords } from "./dns/records";
 
-export const dns = dnsRecords();
+export const dns = new DnsRecords("binari.ly");
