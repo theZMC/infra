@@ -8,6 +8,7 @@ This repository manages infrastructure using Pulumi with TypeScript.
 .
 ├── .github/workflows/    # CI/CD automation
 ├── stacks/               # Infrastructure stacks
+│   ├── abscond.io/       # abscond.io domain infrastructure
 │   ├── binari.ly/        # binari.ly domain infrastructure
 │   ├── callahan.house/   # callahan.house domain infrastructure
 │   └── zmc.dev/          # zmc.dev domain infrastructure
