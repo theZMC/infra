@@ -12,6 +12,7 @@ This repository manages infrastructure using Pulumi with TypeScript.
 │   ├── binari.ly/        # binari.ly domain infrastructure
 │   ├── curlto.me/        # curlto.me domain infrastructure
 │   ├── callahan.house/   # callahan.house domain infrastructure
+│   └── zach.media/       # zach.media domain infrastructure
 │   └── zmc.dev/          # zmc.dev domain infrastructure
 ```
 
