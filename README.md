@@ -10,6 +10,7 @@ This repository manages infrastructure using Pulumi with TypeScript.
 ├── stacks/               # Infrastructure stacks
 │   ├── abscond.io/       # abscond.io domain infrastructure
 │   ├── binari.ly/        # binari.ly domain infrastructure
+│   ├── curlto.me/        # curlto.me domain infrastructure
 │   ├── callahan.house/   # callahan.house domain infrastructure
 │   └── zmc.dev/          # zmc.dev domain infrastructure
 ```
