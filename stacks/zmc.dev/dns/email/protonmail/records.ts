@@ -12,7 +12,9 @@ export class Records extends pulumi.ComponentResource {
   public readonly dkim1: cloudflare.DnsRecord;
   public readonly dkim2: cloudflare.DnsRecord;
   public readonly dkim3: cloudflare.DnsRecord;
+  public readonly dmarc: cloudflare.DnsRecord;
   public readonly spf: cloudflare.DnsRecord;
+
   constructor(
     name: string,
     args: RecordsArgs,
@@ -76,6 +78,14 @@ export class Records extends pulumi.ComponentResource {
       zoneId,
     }, { parent: this });
 
+    this.dmarc = new cloudflare.DnsRecord(`dmarc`, {
+      name: "_dmarc",
+      type: "TXT",
+      ttl: 300,
+      content: `"v=DMARC1; p=quarantine"`,
+      zoneId,
+    }, { parent: this });
+
     this.spf = new cloudflare.DnsRecord(`spf`, {
       name: "@",
       type: "TXT",
@@ -91,6 +101,7 @@ export class Records extends pulumi.ComponentResource {
       dkim1: this.dkim1,
       dkim2: this.dkim2,
       dkim3: this.dkim3,
+      dmarc: this.dmarc,
       spf: this.spf,
     });
   }
